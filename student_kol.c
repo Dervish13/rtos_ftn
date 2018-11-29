@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 
 typedef struct
 {
@@ -11,6 +10,7 @@ typedef struct
 
 int broj;
 student stud;
+FILE* baza;
 
 student unos_studenta ()
 {	
@@ -29,23 +29,47 @@ student unos_studenta ()
 	scanf("%s",br_indeksa);
 
 	strcpy(a._ime,ime);
-	strcpy(a._ime,ime);
 	strcpy(a._prezime,prezime);
 	strcpy(a._br_indeksa,br_indeksa);
 	return a;
 }
+void menjanje_studenta()
+{
 
 
 
+
+
+}
 int main ()
 {
 student svi_studenti[500];
 int i=0;
 int k=0;
+char ime[20];
+char prezime[20];
+char br_indeksa[20];
 
+baza=fopen("/tmp/baza","r");
+
+while(EOF!=fscanf(baza,"%s %s %s\n",ime,prezime,br_indeksa))
+{
+
+	strcpy(svi_studenti[i]._ime,ime);
+	strcpy(svi_studenti[i]._prezime,prezime);
+	strcpy(svi_studenti[i]._br_indeksa,br_indeksa);
+	i++;
+}
+printf("\n\nDobrodosli u vasu listu studenata\n");
 while (1)
 {
-	printf ("unesi broj\n");
+	printf ("\nOdaberite opciju\n");
+	printf("1) Unesite novog studenta\n");
+	printf("2) Pretraga studenata po prezimenu\n");
+	printf("3) Ispis svih studenata\n");
+	printf("4) Promena studenata\n");
+	printf("5) Save & Exit\n\n");
+
 	scanf("%d",&broj);
 	switch(broj)
 	{
@@ -66,9 +90,18 @@ while (1)
 			printf("CASE 4\n");
 			break;
 		case 5: //izlaz
+			baza=fopen("/tmp/baza","w");
+			for(k=0;k<i;k++)
+			{
+				fprintf(baza,"%s %s %s\n",svi_studenti[k]._ime,svi_studenti[k]._prezime,svi_studenti[k]._br_indeksa);
+
+			}
+			fclose(baza);
 			return 0;
 		default:
 		printf ("nisi uneo pravi broj\n");
 	}
 }
+
+
 }
