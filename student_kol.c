@@ -1,26 +1,37 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-
-int broj;
-struct student a;
-int while_broj=1;
-
-struct student
+typedef struct
 {
 	char _ime[20];
-	char *_prezime;
-	char *_br_indeksa;
-};
-struct student unos_studenta ()
+	char _prezime[20];
+	char _br_indeksa[20];
+}student;
+
+int broj;
+student stud;
+
+student unos_studenta ()
 {	
 
-	char *ime;
-	char *prezime="test";
-	char *br_indeksa="test";
+	student a;
+	char ime[20];
+	char prezime[20];
+	char br_indeksa[20];
 	printf("Unesi ime studenta\n");
 	scanf("%s",ime);
-	struct student a={ime,prezime,br_indeksa};
+
+	printf("Unesi prezime studenta\n");
+	scanf("%s",prezime);
+
+	printf("Unesi broj indeksa studenta\n");
+	scanf("%s",br_indeksa);
+
+	strcpy(a._ime,ime);
+	strcpy(a._ime,ime);
+	strcpy(a._prezime,prezime);
+	strcpy(a._br_indeksa,br_indeksa);
 	return a;
 }
 
@@ -28,25 +39,28 @@ struct student unos_studenta ()
 
 int main ()
 {
-//	struct student a={"test","test","test"};
+student svi_studenti[500];
+int i=0;
+int k=0;
 
-while (while_broj==1)
+while (1)
 {
 	printf ("unesi broj\n");
 	scanf("%d",&broj);
 	switch(broj)
 	{
 		case 1:  //unos studenta
-			a=unos_studenta();
-			printf("CASE 1\n");
+			svi_studenti[i]=unos_studenta();
+			++i;
 			break;
 		case 2: // pretraga po prezimenu
 			printf("CASE 2\n");
 			break;
 		case 3: // ispis svih upisanih 
-			printf("CASE 3\n");
-
-			printf("%s\n",a._ime);
+			for(k=0;k<i;k++)
+			{
+				printf("%d. student je  %s %s sa brojem indeksa %s\n",k+1,svi_studenti[k]._ime,svi_studenti[k]._prezime,svi_studenti[k]._br_indeksa);
+			}
 			break;
 		case 4: // menjanje podataka studenta
 			printf("CASE 4\n");
