@@ -46,6 +46,8 @@ int main ()
 student svi_studenti[500];
 int i=0;
 int k=0;
+int redni_broj,opcija;
+int duzina_prezimena;
 char ime[20];
 char prezime[20];
 char br_indeksa[20];
@@ -78,7 +80,24 @@ while (1)
 			++i;
 			break;
 		case 2: // pretraga po prezimenu
-			printf("CASE 2\n");
+				printf("\nUnesite prezime ili deo prezimena koji zelite da pronadjete\n");
+				scanf("%s",prezime),	
+				duzina_prezimena=strlen(prezime);
+				printf ("\n Rezultat pretrade: \n");
+
+				for (k=0;k<i;k++)
+					{
+						if (strncmp(prezime,svi_studenti[k]._prezime,duzina_prezimena)==0)
+						{
+							printf("%d. student je %s %s sa brojem indeksa %s\n",k+1,svi_studenti[k]._ime,svi_studenti[k]._prezime,svi_studenti[k]._br_indeksa);
+
+						}
+
+
+
+
+
+					}
 			break;
 		case 3: // ispis svih upisanih 
 			for(k=0;k<i;k++)
@@ -87,7 +106,47 @@ while (1)
 			}
 			break;
 		case 4: // menjanje podataka studenta
-			printf("CASE 4\n");
+			printf("\n Molim vas upisite redni broj studenta koga zelite da promenite\n");
+			scanf("%d",&redni_broj);
+			if (redni_broj>=i+1)
+			{
+				printf("\n Ne postoji student sa tim rednim brojem\n\n");
+			}
+			else
+			{
+				printf("\n Koji parametar zelite da promenite?\n\n");
+				printf ("1) Ime studenta: %s\n",svi_studenti[redni_broj-1]._ime);
+				printf ("2) Prezime studenta: %s\n",svi_studenti[redni_broj-1]._prezime);
+				printf ("3) Broj indeksa studenta: %s\n",svi_studenti[redni_broj-1]._br_indeksa);
+				printf ("4) Ne zelim promenu (povratak) \n\n");
+				scanf("%d",&opcija);
+				switch(opcija)
+				{
+				case 1:
+					printf("Unesite novo ime studenta: ");
+					scanf("%s",ime);
+					strcpy(svi_studenti[redni_broj-1]._ime,ime);
+					break;
+				case 2:
+					printf("Unesite novo prezime studenta: ");
+					scanf("%s",prezime);
+					strcpy(svi_studenti[redni_broj-1]._prezime,prezime);
+					break;
+				case 3:
+					printf("Unesite novi broj indeksa studenta: ");
+					scanf("%s",br_indeksa);
+					strcpy(svi_studenti[redni_broj-1]._br_indeksa,br_indeksa);
+					break;
+				case 4:
+					break;
+				default:
+				printf ("Ne postoji opcija\n");
+
+
+				}
+			}
+
+			
 			break;
 		case 5: //izlaz
 			baza=fopen("/tmp/baza","w");
@@ -99,7 +158,7 @@ while (1)
 			fclose(baza);
 			return 0;
 		default:
-		printf ("nisi uneo pravi broj\n");
+		printf ("Ne postoji opcija koju ste odabrali\n Molim vas odaberite opciju sa liste\n");
 	}
 }
 
