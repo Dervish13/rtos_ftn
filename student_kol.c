@@ -45,15 +45,18 @@ char ime[20];
 char prezime[20];
 char br_indeksa[20];
 
+
 baza=fopen("/tmp/baza","r");
-
-while(EOF!=fscanf(baza,"%s %s %s\n",ime,prezime,br_indeksa))
+if (baza!=NULL)
 {
+	while(EOF!=fscanf(baza,"%s %s %s\n",ime,prezime,br_indeksa))
+	{
 
-	strcpy(svi_studenti[i]._ime,ime);
-	strcpy(svi_studenti[i]._prezime,prezime);
-	strcpy(svi_studenti[i]._br_indeksa,br_indeksa);
-	i++;
+		strcpy(svi_studenti[i]._ime,ime);
+		strcpy(svi_studenti[i]._prezime,prezime);
+		strcpy(svi_studenti[i]._br_indeksa,br_indeksa);
+		i++;
+	}
 }
 printf("\n\nDobrodosli u vasu listu studenata\n");
 while (1)
