@@ -33,14 +33,7 @@ student unos_studenta ()
 	strcpy(a._br_indeksa,br_indeksa);
 	return a;
 }
-void menjanje_studenta()
-{
 
-
-
-
-
-}
 int main ()
 {
 student svi_studenti[500];
