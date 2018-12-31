@@ -31,8 +31,8 @@ int main() {
     return 1;
   }
   printf(" Posaljite jednacinu za vas TCP digitron\n");
-  scanf("%s", jednacina);
-
+  /* fgets("%s", jednacina); */
+  fgets(jednacina, sizeof(jednacina),stdin);
   send(network_socket, jednacina, strlen(jednacina), 0);
   printf("Izracunavanje u procesu... \n");
   float resenje;
