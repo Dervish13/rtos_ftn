@@ -7,11 +7,13 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#define MAX 20
+
 int main() {
   // napravi socket
   int network_socket;
-  char jednacina[20];
-  char odgovor_servera[20];
+  char jednacina[MAX];
+  char odgovor_servera[MAX];
 
   network_socket = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -38,7 +40,7 @@ int main() {
   float resenje;
   // dobiti od servera
   recv(network_socket, &resenje, sizeof(float),0);
-  snprintf(odgovor_servera,20,"%.2f",resenje);
+  snprintf(odgovor_servera,MAX,"%.2f",resenje);
   printf(" Server je rekao: %s\n",odgovor_servera);
 
   close(network_socket);
