@@ -7,10 +7,11 @@
 #include <unistd.h>
 
 int main() {
-  char poruka_servera[30] = "Dobrodosli na tcp digitron \n\n";
+  /* char poruka_servera[30] = "Dobrodosli na tcp digitron \n\n"; */
 
   // pravimo socket servera
   int server_socket;
+  char jednacina[20]={0};
   server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
   // adresa servera
@@ -23,14 +24,28 @@ int main() {
   bind(server_socket, (struct sockaddr*)&server_address,
        sizeof(server_address));
 
-  listen(server_socket, 5);
-
-  int client_socket;
-  client_socket=accept(server_socket,NULL,NULL);
-
-  //posalji klijentu
-  send(client_socket,poruka_servera, sizeof(poruka_servera),0);
-  //zatvori socket
-  close(server_socket);
+  listen(server_socket, 1);
+  int client_socket1, client_socket2, client_socket3, client_socket4,
+      client_socket5;
+  client_socket1 = accept(server_socket, NULL, NULL);
+  /* client_socket2 = accept(server_socket, NULL, NULL); */
+  /* client_socket3 = accept(server_socket, NULL, NULL); */
+  /* client_socket4 = accept(server_socket, NULL, NULL); */
+  /* client_socket5 = accept(server_socket, NULL, NULL); */
+  read(client_socket1,jednacina,sizeof(jednacina));
+  printf("%s",jednacina);
+  float a=33;
+  // posalji klijentu
+  send(client_socket1, &a, sizeof(float), 0);
+  // zatvori socket
+  /* send(client_socket2, poruka_servera, sizeof(poruka_servera), 0); */
+  /* // zatvori socket */
+  /* send(client_socket3, poruka_servera, sizeof(poruka_servera), 0); */
+  /* // zatvori socket */
+  /* send(client_socket4, poruka_servera, sizeof(poruka_servera), 0); */
+  /* // zatvori socket */
+  /* send(client_socket5, poruka_servera, sizeof(poruka_servera), 0); */
+  /* // zatvori socket */
+  close (server_socket);
   return 0;
 }
