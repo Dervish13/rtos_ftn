@@ -31,7 +31,6 @@ void ObrisiRazmake(char* niz)
 float izracunaj (char *racun,int velicina_jedn)
 {
   char tmp1[10],tmp2[10],tmp3[10];
-  printf("iz izracunaj:%s\n",racun);
   int i=0;
   int k=0;
   char znak;
@@ -40,7 +39,6 @@ float izracunaj (char *racun,int velicina_jedn)
     tmp1[i]=racun[i];
     i++;
 
-  printf("tmp1: %s\n",tmp1);
   }
 
   strcpy(tmp3,tmp1);
@@ -49,10 +47,8 @@ float izracunaj (char *racun,int velicina_jedn)
   ++i;
   tmp2[k]=racun[i];
   k++;
-  printf("tmp1: %s\n",tmp1);
   }
 
-  printf("tmp1: %s, tmp2: %s\n",tmp1,tmp2);
   if (znak=='+')
   { rez=(atof(tmp3)+atof(tmp2));
   return rez;
@@ -92,11 +88,9 @@ int main() {
   client_socket1 = accept(server_socket, NULL, NULL);
   read(client_socket1, jednacina, sizeof(jednacina));
   ObrisiRazmake(jednacina);
-  printf("Pokupljeno od clienta:%s\n", jednacina);
   velicina_jednacine=(sizeof(jednacina)/sizeof(char));
 
   a=izracunaj(jednacina,velicina_jednacine);
-  printf("izracunano: %f",a);
   // posalji klijentu
   send(client_socket1, &a, sizeof(a), 0);
   // zatvori socket
