@@ -6,154 +6,13 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <ctype.h>
 #define MAX 20
-
-char stack[25];
-int top = -1;
-
-void push(char item) {
-   stack[++top] = item;
-}
-
-char pop() {
-   return stack[top--];
-}
-
-//returns precedence of operators
-int precedence(char symbol) {
-
-   switch(symbol) {
-      case '+':
-      case '-':
-         return 2;
-         break;
-      case '*':
-      case '/':
-         return 3;
-         break;
-      case '^':
-         return 4;
-         break;
-      case '(':
-      case ')':
-      case '#':
-         return 1;
-         break;
-   }
-}
 
 //check whether the symbol is operator?
 int isOperator(char symbol) {
-
-   switch(symbol) {
-      case '+':
-      case '-':
-      case '*':
-      case '/':
-      case '^':
-      case '(':
-      case ')':
-         return 1;
-      break;
-         default:
-         return 0;
-   }
-}
-
-//converts infix expression to postfix
-void convert(char infix[],char postfix[]) {
-   int i,symbol,j = 0;
-   stack[++top] = '#';
-
-   for(i = 0;i<strlen(infix)-1;i++) {
-      symbol = infix[i];
-
-      if(isOperator(symbol) == 0) {
-         postfix[j] = symbol;
-         j++;
-      } else {
-         if(symbol == '(') {
-            push(symbol);
-         }else {
-            if(symbol == ')') {
-
-               while(stack[top] != '(') {
-                  postfix[j] = pop();
-                  j++;
-               }
-
-               pop();//pop out (.
-            } else {
-               if(precedence(symbol)>precedence(stack[top])) {
-                  push(symbol);
-               }else {
-
-                  while(precedence(symbol)<=precedence(stack[top])) {
-                     postfix[j] = pop();
-                     j++;
-                  }
-
-                  push(symbol);
-               }
-            }
-         }
-      }
-   }
-
-   while(stack[top] != '#') {
-      postfix[j] = pop();
-      j++;
-   }
-
-  postfix[j]='\0';//null terminate string.
-}
-
-//int stack
-int stack_int[MAX];
-int top_int = -1;
-
-void push_int(int item) {
-   stack_int[++top_int] = item;
-}
-
-char pop_int() {
-   return stack_int[top_int--];
-}
-
-//evaluates postfix expression
-int evaluate(char *postfix){
-
-   char ch;
-   int i = 0,operand1,operand2;
-
-   while( (ch = postfix[i++]) != '\0') {
-
-      if(isdigit(ch)) {
-	     push_int(ch-'0'); // Push the operand
-      }else {
-         //Operator,pop two  operands
-         operand2 = pop_int();
-         operand1 = pop_int();
-
-         switch(ch) {
-            case '+':
-               push_int(operand1+operand2);
-               break;
-            case '-':
-               push_int(operand1-operand2);
-               break;
-            case '*':
-               push_int(operand1*operand2);
-               break;
-            case '/':
-               push_int(operand1/operand2);
-               break;
-         }
-      }
-   }
-
-   return stack_int[top_int];
+    if(symbol=='+' || symbol=='-' || symbol=='*' || symbol=='/')
+    {return 1;}
+    return 0;
 }
 
 void ObrisiRazmake(char* niz)
@@ -168,13 +27,56 @@ void ObrisiRazmake(char* niz)
   }
   *i = 0;
 }
-int main() {
-  // pravimo socket servera
-  int server_socket;
-  /* char jednacina[MAX] = {0}; */
-  char postfix[MAX],infix[MAX];
-  server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
+float izracunaj (char *racun,int velicina_jedn)
+{
+  char tmp1[10],tmp2[10],tmp3[10];
+  printf("iz izracunaj:%s\n",racun);
+  int i=0;
+  int k=0;
+  char znak;
+  float rez;
+  while (isOperator(racun[i])!=1){
+    tmp1[i]=racun[i];
+    i++;
+
+  printf("tmp1: %s\n",tmp1);
+  }
+
+  strcpy(tmp3,tmp1);
+  znak=racun[i];
+  while (i<=velicina_jedn){
+  ++i;
+  tmp2[k]=racun[i];
+  k++;
+  printf("tmp1: %s\n",tmp1);
+  }
+
+  printf("tmp1: %s, tmp2: %s\n",tmp1,tmp2);
+  if (znak=='+')
+  { rez=(atof(tmp3)+atof(tmp2));
+  return rez;
+  }
+  if (znak=='-')
+  { rez=(atof(tmp3)-atof(tmp2));
+  return rez;
+  }
+  if (znak=='*')
+  { rez=(atof(tmp3)*atof(tmp2));
+  return rez;
+  }
+  if (znak=='/')
+  { rez=(atof(tmp3)/atof(tmp2));
+  return rez;
+  }
+}
+int main() {
+  int server_socket; // pravimo socket servera
+  float a;
+  int velicina_jednacine;
+  char jednacina[20]={0};
+
+  server_socket = socket(AF_INET, SOCK_STREAM, 0);
   // adresa servera
   struct sockaddr_in server_address;
   server_address.sin_family = AF_INET;
@@ -188,17 +90,13 @@ int main() {
   listen(server_socket, 1); // cekanje konekcije
   int client_socket1;
   client_socket1 = accept(server_socket, NULL, NULL);
-  read(client_socket1, infix, sizeof(infix));
-  printf("%s\n", infix);
-  ObrisiRazmake(infix);
-  float a;
+  read(client_socket1, jednacina, sizeof(jednacina));
+  ObrisiRazmake(jednacina);
+  printf("Pokupljeno od clienta:%s\n", jednacina);
+  velicina_jednacine=(sizeof(jednacina)/sizeof(char));
 
-  convert(infix,postfix);
-  printf("Infix expression is: %s\n" , infix);
-  printf("Postfix expression is: %s\n" , postfix);
-  printf("Evaluated expression is: %d\n" , evaluate(postfix));
-  a=evaluate(postfix);
-  printf("%f",a);
+  a=izracunaj(jednacina,velicina_jednacine);
+  printf("izracunano: %f",a);
   // posalji klijentu
   send(client_socket1, &a, sizeof(a), 0);
   // zatvori socket
